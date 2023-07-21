@@ -43,7 +43,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./frontend/src:/frontend/src # 가상 네트워크 연결
+      - ./frontend:/frontend # 가상 네트워크 연결
     networks:
       - ai_net
     tty: true
