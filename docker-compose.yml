@@ -100,6 +100,28 @@ services:
       - rabbitmq
       - backend
 
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - ai_net
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3060:3000"
+    networks:
+      - ai_net
+    depends_on:
+      - prometheus
+        
 networks:
   ai_net:
     driver: bridge
