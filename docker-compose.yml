@@ -3,6 +3,18 @@ version: "3.7"
 
 # 띄울 컨테이너 목록
 services:
+  # 순서상 database가 먼저 와야 함
+  mysql:
+    image: mysql:8
+    # 환경 설정 부분
+    env_file:
+      - ./settings/.env
+    container_name: ainterview_db
+    ports:
+      - "3305:3306"
+    # 가상 네트워크 연결
+    networks:
+      - ai_net
 
   backend:
     # 환경 설정 부분
@@ -43,25 +55,13 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./frontend:/frontend # 가상 네트워크 연결
+      - ./frontend/src:/frontend/src # 가상 네트워크 연결
     networks:
       - ai_net
     tty: true
     stdin_open: true
     depends_on:
       - backend
-
-  mysql:
-    image: mysql:8
-    # 환경 설정 부분
-    env_file:
-      - ./settings/.env
-    container_name: ainterview_db
-    ports:
-      - "3305:3306"
-    # 가상 네트워크 연결
-    networks:
-      - ai_net
 
   rabbitmq:
     image: rabbitmq:3.7-management
@@ -102,6 +102,7 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
+    container_name: prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
@@ -115,16 +116,37 @@ services:
 
   grafana:
     image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - grafana-storage:/var/lib/grafana
     ports:
       - "3060:3000"
     networks:
       - ai_net
     depends_on:
       - prometheus
-        
+
+  nodeexporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    networks:
+      - ai_net
+
 networks:
   ai_net:
     driver: bridge
 
 volumes:
   build_folder: null
+  grafana-storage:
