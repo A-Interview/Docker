@@ -119,6 +119,7 @@ services:
     container_name: grafana
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
     ports:
       - "3060:3000"
     networks:
@@ -162,6 +163,7 @@ services:
 
   alertmanager:
     image: prom/alertmanager:v0.23.0
+    container_name: alertmanager
     volumes:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     command:
