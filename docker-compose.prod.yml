@@ -5,9 +5,9 @@ version: "3.7"
 services:
 
   backend:
-    # 환경 설정 부분
     env_file:
       - ./settings/.env.production
+    # 환경 설정 부분
     command: bash -c "python manage.py makemigrations && python manage.py migrate && daphne -b 0.0.0.0 -p 8000 ainterview.asgi:application"
     build:
       context: ./backend
@@ -24,25 +24,39 @@ services:
     expose:
       - 8000
 
-  frontend:
-    container_name: frontend
+  nginx:
+    container_name: nginx
     build:
       # context : 현재 폴더의 frontend 폴더에 있는 도커파일을 쓰겠다.
       context: ./frontend
     restart: always
-    volumes:
-      - ./frontend/src:/frontend/src
-      - ./frontend/build:/frontend/build
-      - ./frontend/build:/var/www/frontend
     # 가상 네트워크 연결
     networks:
       - ai_net
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     tty: true
     ports:
       - "80:80"
+      - "443:443"
     stdin_open: true
     depends_on:
       - backend
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  
+  certbot: #certbot 컨테이너 추가
+    image: certbot/certbot
+    restart: unless-stopped
+    container_name: certbot
+    volumes:
+    - ./certbot/conf:/etc/letsencrypt
+    - ./certbot/www:/var/www/certbot
+    depends_on:
+      - nginx
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
 
   rabbitmq:
     image: rabbitmq:3.7-management
@@ -158,5 +172,4 @@ networks:
     external: true
 
 volumes:
-  build_folder: null
   grafana-storage:
