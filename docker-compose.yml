@@ -49,7 +49,7 @@ services:
     build:
       # context : 현재 폴더의 frontend 폴더에 있는 도커파일을 쓰겠다.
       context: ./frontend
-    command: [ "npm", "start" ]
+    command: ["npm", "start"]
     # command : 컨테이너가 띄워질 때 실행하는 명령어 / 서버실행
     restart: always
     ports:
@@ -135,10 +135,10 @@ services:
       - /sys:/host/sys:ro
       - /:/rootfs:ro
     command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--path.rootfs=/host'
-      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--path.rootfs=/host"
+      - "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)"
     pid: host
     ports:
       - 9100:9100
