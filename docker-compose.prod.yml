@@ -29,6 +29,7 @@ services:
     build:
       # context : 현재 폴더의 frontend 폴더에 있는 도커파일을 쓰겠다.
       context: ./frontend
+      dockerfile: Dockerfile.prod
     restart: always
     # 가상 네트워크 연결
     networks:
@@ -86,7 +87,7 @@ services:
       dockerfile: dockerfile
     environment:
       - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
-    # command: sh -c "celery -A ainterview worker -l info --pool=solo"
+    # command: sh -c "celery -A ainterview worker -l info —pool=solo"
     command: sh -c "celery -A ainterview worker -l info"
 
     networks:
