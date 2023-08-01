@@ -15,19 +15,19 @@ jobs:
     - name: create env file
       run: |
         mkdir -p settings
-        echo "${{ secrets.DJANGO_SECRET_KEY }}" >> settings/.env.production
-        echo "${{ secrets.DJANGO_SETTINGS_MODULE }}" >> settings/.env.production
-        echo "{{ secrets.GPT_API_KEY }}" >> settings/.env.production
-        echo "{{ secrets.HOST_IP }}" >> settings/.env.production
-        echo "{{ secrets.MYSQL_NAME }}" >> settings/.env.production
-        echo "{{ secrets.MYSQL_USER }}" >> settings/.env.production
-        echo "{{ secrets.MYSQL_PASSWORD }}" >> settings/.env.production
-        echo "{{ secrets.HOST }}" >> settings/.env.production
-        echo "{{ secrets.MY_AWS_ACCESS_KEY }}" >> settings/.env.production
-        echo "{{ secrets.MY_AWS_SECRET_ACCESS_KEY }}" >> settings/.env.production
-        echo "{{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> settings/.env.production
-        echo "{{ secrets.AWS_S3_CUSTOM_DOMAIN }}" >> settings/.env.production
-        echo "{{ secrets.FILE_URL }}" >> settings/.env.production
+        echo DJANGO_SECRET_KEY='${{ secrets.DJANGO_SECRET_KEY }}' >> settings/.env.production
+        echo DJANGO_SETTINGS_MODULE="${{ secrets.DJANGO_SETTINGS_MODULE }}" >> settings/.env.production
+        echo GPT_API_KEY="${{ secrets.GPT_API_KEY }}" >> settings/.env.production
+        echo HOST_IP="${{ secrets.HOST_IP }}" >> settings/.env.production
+        echo MYSQL_NAME="${{ secrets.MYSQL_NAME }}" >> settings/.env.production
+        echo MYSQL_USER="${{ secrets.MYSQL_USER }}" >> settings/.env.production
+        echo MYSQL_PASSWORD="${{ secrets.MYSQL_PASSWORD }}" >> settings/.env.production
+        echo HOST="${{ secrets.HOST }}" >> settings/.env.production
+        echo MY_AWS_ACCESS_KEY="${{ secrets.MY_AWS_ACCESS_KEY }}" >> settings/.env.production
+        echo MY_AWS_SECRET_ACCESS_KEY="${{ secrets.MY_AWS_SECRET_ACCESS_KEY }}" >> settings/.env.production
+        echo AWS_STORAGE_BUCKET_NAME="${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> settings/.env.production
+        echo AWS_S3_CUSTOM_DOMAIN="${{ secrets.AWS_S3_CUSTOM_DOMAIN }}" >> settings/.env.production
+        echo FILE_URL="${{ secrets.FILE_URL }}" >> settings/.env.production
         
     - name: Set alertmanager YML
       run: |
