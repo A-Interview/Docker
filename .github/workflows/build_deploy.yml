@@ -46,7 +46,7 @@ jobs:
     - name: copy source via ssh key
       uses: burnett01/rsync-deployments@4.1
       with:
-        switches: -avzr --delete
+        switches: -avzr
         remote_path: /home/ubuntu/Docker
         remote_host: ${{ secrets.AWS_HOST }}
         remote_user: ubuntu
