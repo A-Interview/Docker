@@ -21,7 +21,7 @@ jobs:
         echo "{{ secrets.HOST_IP }}" >> settings/.env.production
         echo "{{ secrets.MYSQL_NAME }}" >> settings/.env.production
         echo "{{ secrets.MYSQL_USER }}" >> settings/.env.production
-        echo "{{ secrets.MYSQL_PAS>> settings/.env.production
+        echo "{{ secrets.MYSQL_PASSWORD }}" >> settings/.env.production
         echo "{{ secrets.HOST }}" >> settings/.env.production
         echo "{{ secrets.MY_AWS_ACCESS_KEY }}" >> settings/.env.production
         echo "{{ secrets.MY_AWS_SECRET_ACCESS_KEY }}" >> settings/.env.production
