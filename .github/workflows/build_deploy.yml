@@ -32,7 +32,7 @@ jobs:
     - name: Set alertmanager YML
       run: |
           mkdir -p alertmanager
-          echo "${{ secrets.SLACK_URL }}" | base64 --decode > alertmanager/application.yml
+          echo "${{ secrets.ALERTMANAGER_YML }}" | base64 --decode > alertmanager/alertmanager.yml
           find alertmanager
         
     - name: create remote directory
