@@ -14,7 +14,7 @@ jobs:
 
     - name: create env file
       run: |
-        touch settings/.env.production
+        mkdir -p settings
         echo "${{ secrets.DJANGO_SECRET_KEY }}" >> settings/.env.production
         echo "${{ secrets.DJANGO_SETTINGS_MODULE }}" >> settings/.env.production
         echo "{{ secrets.GPT_API_KEY }}" >> settings/.env.production
